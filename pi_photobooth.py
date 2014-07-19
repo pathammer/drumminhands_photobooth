@@ -172,14 +172,15 @@ def start_photobooth():
 	print "Taking pics" 
 	now = time.strftime("%Y%m%d%H%M%S") #get the current date and time for the start of the filename
 	try: #take the photos
-		for i, filename in enumerate(camera.capture_continuous(file_path + now + '-' + '{counter:02d}.jpg')):
-			countdown() #GPIO.output(led2_pin,True) #turn on the LED
-			print(filename)
-			sleep(0.25) #pause the LED on for just a bit
-			turn_off() #GPIO.output(led2_pin,False) #turn off the LED
-			sleep(capture_delay) # pause in-between shots
-			if i == total_pics-1:
-				break
+          countdown()
+          for i, filename in enumerate(camera.capture_continuous(file_path + now + '-' + '{counter:02d}.jpg')):
+            print(filename)
+            turn_off() #GPIO.output(led2_pin,False) #turn off the LED
+            sleep(capture_delay) # pause in-between shots
+            if i == total_pics-1:
+              break
+            else:
+              countdown()
 	finally:
 		camera.stop_preview()
 		camera.close()
@@ -253,7 +254,7 @@ print "Photo booth app running..."
 #   time.sleep(1)
 #   print("sleep")
 # wait for the big button to be pressed
-
+turn_off()
 while True:
 	GPIO.wait_for_edge(button1_pin, GPIO.FALLING)
 	time.sleep(0.2) #debounce
